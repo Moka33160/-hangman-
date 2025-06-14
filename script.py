@@ -1,47 +1,70 @@
 from wonderwords import RandomWord
 import string
 
-GAME_STATE = None
-alphabet = string.ascii_lowercase
-letter = list(alphabet)
 
-def generationDuMotAleatoire(difficulte) :
+class jeux:
 
-    try :
-        random_Word = RandomWord()
-        if(difficulte == 1):
-            mot = random_Word.word(word_min_length=2 ,word_max_length=5)
- 
-        elif(difficulte == 2 ):
-            mot = random_Word.word(word_min_length=7 ,word_max_length=10)
-     
-        elif(difficulte == 3) :
-            mot = random_Word.word(word_min_length=12 , word_max_length=15)
-
-        else :
-            mot = random_Word.word(word_min_length=15 , word_max_length=25)
-        return mot
-    except :
-        raise Exception("erreur lors de la creation du mot")
-
-
-def symbolMot(mot) :
-    try :
-        tab = []
-        for i in mot:
-            tab.append('_')
-        return tab
-    except :
-        raise Exception("erreur lors de la symbolisationation du mot")
-
-
-def bonne_Lettre(let) :
-    try :
-        if(let in letter) :
-            return let
-        return False
-    except :
-        raise Exception("erreur lors de la verification de la contenance de la lettre")
+    GAME_STATE = None
+    alphabet = string.ascii_lowercase
+    letter = list(alphabet)
+    cpt = 0
     
 
+    def __init__(self , difficulte):
+        self.difficulte = difficulte
+    """_summary_
+    permet de générer un mot plus ou moins long suivant la difficulté sélectionner
+    """
+    def generationDuMotAleatoire( self ) :
+
         
+            random_Word = RandomWord()
+            if(self.difficulte == 1):
+                mot = random_Word.word(word_min_length=2 ,word_max_length=5)
+ 
+            elif(self.difficulte == 2 ):
+                mot = random_Word.word(word_min_length=7 ,word_max_length=10)
+     
+            elif(self.difficulte == 3) :
+                mot = random_Word.word(word_min_length=12 , word_max_length=15)
+
+            elif(self.difficulte == 4):
+                mot = random_Word.word(word_min_length=15 , word_max_length=25)
+            return mot
+
+
+    """_summary_
+    permet de symboliser le mot par des traits
+    """
+    def symbolMot(self , mot) :
+        
+            tab = []
+            for i in mot:
+                tab.append('_')
+            return tab
+      
+
+    """_summary_
+    regarde si le joueur a saisi une lettre.
+    """
+    def bonne_Lettre(self ,let) :
+        
+            if(let in self.letter) :
+                return let
+            return False
+       
+    """_summary_
+    peremt de faire la perte de point 
+    """
+    def pertedePoint(self , let ) :
+        
+            if( let not in self.letter):
+                self.cpt  += 1
+            if(self.difficulte == 4 & self.cpt == 3):
+                self.GAME_STATE = False
+            elif(self.difficulte == 3 & self.cpt == 4):
+                self.GAME_STATE = False
+            elif(self.difficulte == 2 & self.cpt == 5):
+                self.GAME_STATE = False   
+            elif(self.difficulte == 1 & self.cpt == 6):
+                self.GAME_STATE = False
